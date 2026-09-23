@@ -27,6 +27,8 @@ print("Linhas totalmente duplicadas:", df.duplicated().sum())
 print("IDs de cliente duplicados:", df['id_cliente'].duplicated().sum())
 #vert=False → deixa a caixa deitada (mais fácil de ler quando tem outliers longe)
 
+
+
 # %%
 #Verificando valores que mais se repetem a fim de detectar algum código implítico
 #que pode vir a atrapalhar as análises
@@ -45,4 +47,25 @@ for col in colunas_para_checar:
     print(f"\n--- {col} ---")
     print(df[col].value_counts().head(3))
 
+
+#Renda e idades suspeitas - utilizando flags para sinalizá-los
+# %%
+df['renda_suspeita'] = (df['renda_mensal_brl'] == 1200.00).astype(int)
+df['idade_suspeita'] = (df['idade'] == 18).astype(int)
+
+print("Total de renda suspeita:", df['renda_suspeita'].sum())
+print("Total de idade suspeita:", df['idade_suspeita'].sum())
+
+
+#Verificando a repetição de valores categóricos
+# %%
+print("--- estado ---")
+print(df['estado'].value_counts())
+
+print("\n--- profissao ---")
+print(df['profissao'].value_counts())
+
+print("\n--- tipo_de_conta ---")
+print(df['tipo_de_conta'].value_counts())
+# %%
 
