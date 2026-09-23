@@ -69,3 +69,33 @@ print("\n--- tipo_de_conta ---")
 print(df['tipo_de_conta'].value_counts())
 # %%
 
+
+#Análise de outliers
+# %%
+import matplotlib.pyplot as plt
+
+colunas_numericas = ['idade', 'renda_mensal_brl', 'tempo_relacionamento_meses',
+                      'limite_credito_brl', 'uso_limite_percentual',
+                      'atraso_historico_dias', 'score_bureau',
+                      'qtd_consultas_cpf_ultimos_30d']
+
+fig, axes = plt.subplots(4, 2, figsize=(12, 14))
+axes = axes.ravel()
+
+for i, col in enumerate(colunas_numericas):
+    axes[i].boxplot(df[col], vert=False)
+    axes[i].set_title(col)
+
+plt.tight_layout()
+plt.show()
+# %%
+
+#Análise da relação da média com a variável inadimplentes
+# %%
+colunas_numericas = ['idade', 'renda_mensal_brl', 'tempo_relacionamento_meses',
+                      'limite_credito_brl', 'uso_limite_percentual',
+                      'atraso_historico_dias', 'score_bureau',
+                      'qtd_consultas_cpf_ultimos_30d']
+
+df.groupby('inadimplente')[colunas_numericas].mean().round(2).T
+# %%
