@@ -7,7 +7,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 
 #Importando dados do banco
-df = pd.read_csv('dataset_risco_credito_500k.csv') 
+df = pd.read_csv('base_credito_com_categoricas.csv') 
 
 # %%
 #Verificando conteúdo do banco de dados
@@ -27,5 +27,22 @@ print("Linhas totalmente duplicadas:", df.duplicated().sum())
 print("IDs de cliente duplicados:", df['id_cliente'].duplicated().sum())
 #vert=False → deixa a caixa deitada (mais fácil de ler quando tem outliers longe)
 
+# %%
+#Verificando valores que mais se repetem a fim de detectar algum código implítico
+#que pode vir a atrapalhar as análises
+df['renda_mensal_brl'].value_counts().head(10)
+
+
 
 # %%
+#Verificando valores que mais se repetem a fim de detectar algum código implítico
+#que pode vir a atrapalhar as análises (TODAS AS COLUNAS)
+colunas_para_checar = ['idade', 'tempo_relacionamento_meses', 'limite_credito_brl',
+                        'uso_limite_percentual', 'atraso_historico_dias',
+                        'score_bureau', 'qtd_consultas_cpf_ultimos_30d']
+
+for col in colunas_para_checar:
+    print(f"\n--- {col} ---")
+    print(df[col].value_counts().head(3))
+
+
