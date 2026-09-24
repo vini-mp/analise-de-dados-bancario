@@ -142,3 +142,23 @@ colunas_numericas = ['idade', 'renda_mensal_brl', 'tempo_relacionamento_meses',
 matriz_correlacao = df[colunas_numericas].corr()
 print(matriz_correlacao.round(2))
 
+
+#Realizando a estratificação dos dados numéricos
+# %%
+from sklearn.model_selection import train_test_split
+
+X = df.drop(columns=['inadimplente', 'id_cliente'])
+y = df['inadimplente']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+print("Tamanho do treino:", len(X_train))
+print("Tamanho do teste:", len(X_test))
+print("\nTaxa de inadimplência no treino:", y_train.mean().round(4))
+print("Taxa de inadimplência no teste:", y_test.mean().round(4))
+# %%
