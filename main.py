@@ -90,7 +90,7 @@ plt.tight_layout()
 plt.show()
 # %%
 
-#Análise da relação da média com a variável inadimplentes
+#Análise da relação da média com a variável inadimplentes (sem padronização)
 # %%
 colunas_numericas = ['idade', 'renda_mensal_brl', 'tempo_relacionamento_meses',
                       'limite_credito_brl', 'uso_limite_percentual',
@@ -98,4 +98,36 @@ colunas_numericas = ['idade', 'renda_mensal_brl', 'tempo_relacionamento_meses',
                       'qtd_consultas_cpf_ultimos_30d']
 
 df.groupby('inadimplente')[colunas_numericas].mean().round(2).T
+
+
+
+#Análise variáveis numéricas com a variável alvo (padronizado)
+#Fórmula de Cohen
+# %%
+def cohens_d(grupo1, grupo2):
+    n1, n2 = len(grupo1), len(grupo2)
+    var1, var2 = grupo1.var(), grupo2.var()
+    # desvio padrão combinado (pooled)
+    pooled_std = ((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2)
+    pooled_std = pooled_std ** 0.5
+    return (grupo1.mean() - grupo2.mean()) / pooled_std
+
+for col in colunas_numericas:
+    inadimplentes = df[df['inadimplente'] == 1][col]
+    adimplentes = df[df['inadimplente'] == 0][col]
+    d = cohens_d(inadimplentes, adimplentes)
+    print(f"{col}: d = {d:.3f}")
+
+
+#Análise variáveis categóricas com a variável alvo
+# %%
+print("--- Taxa de inadimplência por estado ---")
+print((df.groupby('estado')['inadimplente'].mean() * 100).round(2).sort_values(ascending=False))
+
+print("\n--- Taxa de inadimplência por profissão ---")
+print((df.groupby('profissao')['inadimplente'].mean() * 100).round(2).sort_values(ascending=False))
+
+print("\n--- Taxa de inadimplência por tipo de conta ---")
+print((df.groupby('tipo_de_conta')['inadimplente'].mean() * 100).round(2).sort_values(ascending=False))
+
 # %%
