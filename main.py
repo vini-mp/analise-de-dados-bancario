@@ -130,4 +130,15 @@ print((df.groupby('profissao')['inadimplente'].mean() * 100).round(2).sort_value
 print("\n--- Taxa de inadimplência por tipo de conta ---")
 print((df.groupby('tipo_de_conta')['inadimplente'].mean() * 100).round(2).sort_values(ascending=False))
 
+
+
+#Cálculo da correlação das variáveis numéricas
 # %%
+colunas_numericas = ['idade', 'renda_mensal_brl', 'tempo_relacionamento_meses',
+                      'limite_credito_brl', 'uso_limite_percentual',
+                      'atraso_historico_dias', 'score_bureau',
+                      'qtd_consultas_cpf_ultimos_30d']
+
+matriz_correlacao = df[colunas_numericas].corr()
+print(matriz_correlacao.round(2))
+
