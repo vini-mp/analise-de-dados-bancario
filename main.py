@@ -57,6 +57,7 @@ print("Total de renda suspeita:", df['renda_suspeita'].sum())
 print("Total de idade suspeita:", df['idade_suspeita'].sum())
 
 
+
 #Verificando a repetição de valores categóricos
 # %%
 print("--- estado ---")
@@ -67,7 +68,7 @@ print(df['profissao'].value_counts())
 
 print("\n--- tipo_de_conta ---")
 print(df['tipo_de_conta'].value_counts())
-# %%
+
 
 
 #Análise de outliers
@@ -88,7 +89,8 @@ for i, col in enumerate(colunas_numericas):
 
 plt.tight_layout()
 plt.show()
-# %%
+
+
 
 #Análise da relação da média com a variável inadimplentes (sem padronização)
 # %%
@@ -119,6 +121,7 @@ for col in colunas_numericas:
     print(f"{col}: d = {d:.3f}")
 
 
+
 #Análise variáveis categóricas com a variável alvo
 # %%
 print("--- Taxa de inadimplência por estado ---")
@@ -143,6 +146,7 @@ matriz_correlacao = df[colunas_numericas].corr()
 print(matriz_correlacao.round(2))
 
 
+
 #Realizando a estratificação dos dados numéricos
 # %%
 from sklearn.model_selection import train_test_split
@@ -161,7 +165,7 @@ print("Tamanho do treino:", len(X_train))
 print("Tamanho do teste:", len(X_test))
 print("\nTaxa de inadimplência no treino:", y_train.mean().round(4))
 print("Taxa de inadimplência no teste:", y_test.mean().round(4))
-# %%
+
 
 
 #Aplicando One-Hot Enconder aos dados categóricos
@@ -199,4 +203,5 @@ X_test_final = pd.concat([
 
 print("Formato final do treino:", X_train_final.shape)
 print("Colunas finais:", list(X_train_final.columns))
-# %%
+
+
