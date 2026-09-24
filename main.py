@@ -162,3 +162,41 @@ print("Tamanho do teste:", len(X_test))
 print("\nTaxa de inadimplência no treino:", y_train.mean().round(4))
 print("Taxa de inadimplência no teste:", y_test.mean().round(4))
 # %%
+
+
+#Aplicando One-Hot Enconder aos dados categóricos
+# %%
+from sklearn.preprocessing import OneHotEncoder
+
+colunas_categoricas = ['estado', 'profissao', 'tipo_de_conta']
+
+encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+
+# Aprende as categorias SÓ com o treino, e já transforma o treino
+X_train_encoded = encoder.fit_transform(X_train[colunas_categoricas])
+
+# Aplica a MESMA transformação aprendida ao teste (sem "aprender" de novo)
+X_test_encoded = encoder.transform(X_test[colunas_categoricas])
+
+print("Formato do treino codificado:", X_train_encoded.shape)
+print("Nomes das novas colunas:", encoder.get_feature_names_out(colunas_categoricas))
+
+
+
+#Juntando os dados criados no processo de enconding ao conjunto original 
+# %%
+colunas_numericas_finais = [col for col in X_train.columns if col not in colunas_categoricas]
+
+X_train_final = pd.concat([
+    X_train[colunas_numericas_finais].reset_index(drop=True),
+    pd.DataFrame(X_train_encoded, columns=encoder.get_feature_names_out(colunas_categoricas))
+], axis=1)
+
+X_test_final = pd.concat([
+    X_test[colunas_numericas_finais].reset_index(drop=True),
+    pd.DataFrame(X_test_encoded, columns=encoder.get_feature_names_out(colunas_categoricas))
+], axis=1)
+
+print("Formato final do treino:", X_train_final.shape)
+print("Colunas finais:", list(X_train_final.columns))
+# %%
